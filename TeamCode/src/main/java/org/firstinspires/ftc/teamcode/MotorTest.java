@@ -131,7 +131,7 @@ public class MotorTest extends LinearOpMode {
 //                if (gamepad1.x) {
 //                    claw.setPosition(OPEN);
 //                }
-                claw.setPosition(gamepad1.right_trigger);
+                claw.setPosition(gamepad2.right_trigger);
 
             TelemetryPacket packet = new TelemetryPacket();
             packet.put("arm", arm.getCurrentPosition());

@@ -73,7 +73,7 @@ public class MotorTest extends LinearOpMode {
     public static double OPEN = 0.0;
     public static double CLOSE = 1.0;
 
-
+    float armposition;
     public static int ARM_LOW = 0;
     public static int ARM_MEDIUM = 200;
     public static int ARM_HIGH = 300;
@@ -122,7 +122,7 @@ public class MotorTest extends LinearOpMode {
 
             // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
             double axial   = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
-            double lateral =  gamepad1.left_stick_x;
+            double lateral =  -gamepad1.left_stick_x;
             double yaw     =  gamepad1.right_stick_x;
 //            double armPower = gamepad2.right_stick_y;
 
@@ -137,8 +137,14 @@ public class MotorTest extends LinearOpMode {
             packet.put("arm", arm.getCurrentPosition());
             FtcDashboard.getInstance().sendTelemetryPacket(packet);
 
-            while (gamepad2.x)
-                arm.setTargetPosition();
+            if (gamepad2.x) {
+                arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                armposition = gamepad2.left_stick_y;
+                arm.setPower(armposition - 0.1);
+                }
+
+
+
 
             if (gamepad2.y) {
                 arm.setTargetPosition(ARM_HIGH);
@@ -158,10 +164,13 @@ public class MotorTest extends LinearOpMode {
                 arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
                 arm.setPower(ARM_POWER);
             }
-            if (!arm.isBusy()) {
-                arm.setPower(0.2);
-
+            if (!gamepad2.x) {
+                if (!arm.isBusy()) {
+                    arm.setPower(0.2);
+                }
             }
+
+
            // if (arm.getCurrentPosition() <= 150){
              //   arm.setPower(0.5);}
             //if (arm.getCurrentPosition() > 150){

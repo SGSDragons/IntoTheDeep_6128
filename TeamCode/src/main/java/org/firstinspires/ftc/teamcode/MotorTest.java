@@ -137,6 +137,9 @@ public class MotorTest extends LinearOpMode {
             packet.put("arm", arm.getCurrentPosition());
             FtcDashboard.getInstance().sendTelemetryPacket(packet);
 
+            while (gamepad2.x)
+                arm.setTargetPosition();
+
             if (gamepad2.y) {
                 arm.setTargetPosition(ARM_HIGH);
                 arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -159,10 +162,10 @@ public class MotorTest extends LinearOpMode {
                 arm.setPower(0.2);
 
             }
-            if (arm.getCurrentPosition() <= 150){
-                arm.setPower(0.5);}
-            if (arm.getCurrentPosition() > 150){
-                arm.setPower(0.2);}
+           // if (arm.getCurrentPosition() <= 150){
+             //   arm.setPower(0.5);}
+            //if (arm.getCurrentPosition() > 150){
+            //    arm.setPower(0.2);}
 
 
 

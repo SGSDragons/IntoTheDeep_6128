@@ -29,16 +29,14 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.acmerobotics.dashboard.FtcDashboard;
 /*
  * This file contains an example of a Linear "OpMode".
  * An OpMode is a 'program' that runs in either the autonomous or the teleop period of an FTC match.
@@ -69,7 +67,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 
 @TeleOp(name="Motor Test", group="Tests")
 @Config
-public class MotorTest extends LinearOpMode {
+public class Teleop_6128 extends LinearOpMode {
 
     public static int ARM_LOW = 35;
     public static int ARM_MEDIUM = 200;

@@ -1,3 +1,4 @@
+//!don't edit this code!
 /* Copyright (c) 2021 FIRST. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -65,7 +66,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Motor Test", group="Tests")
+@TeleOp(name="Teleop_6128", group="Teleop")
 @Config
 public class Teleop_6128 extends LinearOpMode {
 

@@ -52,14 +52,14 @@ public class Teleop_6128_v2 extends LinearOpMode {
 
             double max;
 
-            double drive = gamepad1.left_stick_y;
+            double drive = -gamepad1.left_stick_y;
             double lateral = gamepad1.left_stick_x;
             double turn  =  gamepad1.right_stick_x;
 
-            double leftFrontPower = -drive - lateral + turn;
-            double leftBackPower = -drive + lateral + turn;
-            double rightFrontPower = -drive + lateral - turn;
-            double rightBackPower = -drive - lateral - turn;
+            double leftFrontPower = drive + lateral + turn;
+            double leftBackPower = drive - lateral + turn;
+            double rightFrontPower = drive - lateral - turn;
+            double rightBackPower = drive + lateral - turn;
 
             max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
             max = Math.max(max, Math.abs(leftBackPower));
@@ -81,6 +81,8 @@ public class Teleop_6128_v2 extends LinearOpMode {
            //The following code controls the extendable lever arm for the claw.
 
             double armPower = 0.0;
+
+            claw.setPosition(gamepad2.right_trigger);
 
             if (gamepad2.y) {
                 arm.setTargetPosition(ARM_HIGH);

@@ -52,8 +52,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="easy park", group="Robot")
-public class AutobyTime extends LinearOpMode {
+@Autonomous(name="High basket", group="Robot")
+public class autotime_highbasket extends LinearOpMode {
 
     // This opMode is for an Autonomous drive from the right submersible seam (48 inches from right side wall)
     // and is intended for parking (only) in the observation zone for either red or blue alliance.
@@ -61,6 +61,10 @@ public class AutobyTime extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
     static final double     FORWARD_SPEED = 0.2;
     static final double     STRAFE_SPEED    = 0.5;
+
+    static final double     TURN_SPEED = 0.5;
+
+    static final double FORWARD_SPEED2 = 0.5;
 
     @Override
     public void runOpMode() {
@@ -70,9 +74,9 @@ public class AutobyTime extends LinearOpMode {
         final DcMotor frontLeft  = hardwareMap.get(DcMotor.class, "motor2");
         final DcMotor backRight = hardwareMap.get(DcMotor.class, "motor3");
         final DcMotor backLeft = hardwareMap.get(DcMotor.class, "motor4");
-     //   final DcMotor arm = hardwareMap.get(DcMotor.class, "arm");
-     //   Servo claw = hardwareMap.get(Servo.class, "claw");
-     //   claw.setPosition(0);
+        final DcMotor arm = hardwareMap.get(DcMotor.class, "arm");
+        Servo claw = hardwareMap.get(Servo.class, "claw");
+        claw.setPosition(0);
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
@@ -95,32 +99,45 @@ public class AutobyTime extends LinearOpMode {
         frontRight.setPower(FORWARD_SPEED);
         backRight.setPower(FORWARD_SPEED);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 0.5)) {
-            telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
+        while (opModeIsActive() && (runtime.seconds() < 1.45)) {
+            telemetry.addData("Path", "step 1: moving forward", runtime.seconds());
             telemetry.update();
         }
 
-        // Step 2:  Strafe right for 3 seconds to make it (approx. 46 inches) into the observation zone to park.
-        frontLeft.setPower(STRAFE_SPEED);
-        backLeft.setPower(STRAFE_SPEED);
-        frontRight.setPower(-STRAFE_SPEED);
-        backRight.setPower(-STRAFE_SPEED);
+
+
+
+        frontLeft.setPower(-TURN_SPEED);
+        backLeft.setPower(TURN_SPEED);
+        frontRight.setPower(-TURN_SPEED);
+        backRight.setPower(-TURN_SPEED);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 3.0)) {
-            telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
+        while (opModeIsActive() && (runtime.seconds() < 1.5)) {
+            telemetry.addData("path", "step 2: turning left", runtime.seconds());
+            telemetry.update();
+
+        }
+
+        frontLeft.setPower(FORWARD_SPEED2);
+        backLeft.setPower(FORWARD_SPEED2);
+        frontRight.setPower(FORWARD_SPEED2);
+        backRight.setPower(FORWARD_SPEED2);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() <1.2)) {
+            telemetry.addData("Path", "step 3: moving forward", runtime.seconds());
             telemetry.update();
         }
 
-       // Use the following operations if driving backwards is desired.
-      //  frontLeft.setPower(-FORWARD_SPEED);
-      //  backLeft.setPower(-FORWARD_SPEED);
-      //  frontRight.setPower(-FORWARD_SPEED);
-      //  backRight.setPower(-FORWARD_SPEED);
-      //  runtime.reset();
-      //  while (opModeIsActive() && (runtime.seconds() < 1.0)) {
-      //      telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
-     //       telemetry.update();
-      //  }
+        // Use the following operations if driving backwards is desired.
+        //  frontLeft.setPower(-FORWARD_SPEED);
+        //  backLeft.setPower(-FORWARD_SPEED);
+        //  frontRight.setPower(-FORWARD_SPEED);
+        //  backRight.setPower(-FORWARD_SPEED);
+        //  runtime.reset();
+        //  while (opModeIsActive() && (runtime.seconds() < 1.0)) {
+        //      telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
+        //       telemetry.update();
+        //  }
 
         // Step 4:  Stop the robot.
         frontLeft.setPower(0);

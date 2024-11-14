@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -53,16 +54,26 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @Autonomous(name="High basket", group="Robot")
+@Config
 public class autotime_highbasket extends LinearOpMode {
 
     // This opMode is for an Autonomous drive from the right submersible seam (48 inches from right side wall)
     // and is intended for parking (only) in the observation zone for either red or blue alliance.
     // Insure that no other robots will be in your way for this parking opMode to work as intended.
     private ElapsedTime     runtime = new ElapsedTime();
-    static final double     FORWARD_SPEED = 0.2;
-    static final double     STRAFE_SPEED    = 0.5;
 
-    static final double     TURN_SPEED = 0.5;
+    public static double STEP1_SPEED;
+    public static double     FORWARD_SPEED1 = STEP1_SPEED;
+
+    public static double STEP1_TIME;
+
+    public static double STEP2_TIME;
+
+    public static double STEP3_TIME;
+
+     public static double STEP3_SPEED;
+
+    static final double     TURN_SPEED1 = 0.5;
 
     static final double FORWARD_SPEED2 = 0.5;
 
@@ -94,12 +105,12 @@ public class autotime_highbasket extends LinearOpMode {
         waitForStart();
 
         // Step 1:  Drive forward for a half second to get off the starting side wall (prevent interference).
-        frontLeft.setPower(FORWARD_SPEED);
-        backLeft.setPower(FORWARD_SPEED);
-        frontRight.setPower(FORWARD_SPEED);
-        backRight.setPower(FORWARD_SPEED);
+        frontLeft.setPower(FORWARD_SPEED1);
+        backLeft.setPower(FORWARD_SPEED1);
+        frontRight.setPower(FORWARD_SPEED1);
+        backRight.setPower(FORWARD_SPEED1);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.45)) {
+        while (opModeIsActive() && (runtime.seconds() < STEP1_TIME)) {
             telemetry.addData("Path", "step 1: moving forward", runtime.seconds());
             telemetry.update();
         }
@@ -107,12 +118,12 @@ public class autotime_highbasket extends LinearOpMode {
 
 
 
-        frontLeft.setPower(-TURN_SPEED);
-        backLeft.setPower(TURN_SPEED);
-        frontRight.setPower(-TURN_SPEED);
-        backRight.setPower(-TURN_SPEED);
+        frontLeft.setPower(-TURN_SPEED1);
+        backLeft.setPower(TURN_SPEED1);
+        frontRight.setPower(-TURN_SPEED1);
+        backRight.setPower(-TURN_SPEED1);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.5)) {
+        while (opModeIsActive() && (runtime.seconds() < STEP2_TIME)) {
             telemetry.addData("path", "step 2: turning left", runtime.seconds());
             telemetry.update();
 
@@ -123,7 +134,7 @@ public class autotime_highbasket extends LinearOpMode {
         frontRight.setPower(FORWARD_SPEED2);
         backRight.setPower(FORWARD_SPEED2);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() <1.2)) {
+        while (opModeIsActive() && (runtime.seconds() < STEP3_TIME)) {
             telemetry.addData("Path", "step 3: moving forward", runtime.seconds());
             telemetry.update();
         }
@@ -147,6 +158,17 @@ public class autotime_highbasket extends LinearOpMode {
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
+
+        // Provide telemetry to FTC Dashboard that can be manipulated.
+        while (opModeIsActive()) {
+
+            TelemetryPacket values = new TelemetryPacket();
+            values.put("Forwad Time", STEP1_TIME);
+            values.put("Strafe Time", FORWARD_SPEED1);
+                values.put("Forward Time", STEP2_TIME);
+                values.put("Strafe Time", TURN_SPEED1);
+            FtcDashboard.getInstance().sendTelemetryPacket(values);
+        }
 
         sleep(1000);
     }

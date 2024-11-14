@@ -30,13 +30,16 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
 
 /*
  * This OpMode illustrates the concept of driving a path based on time.
@@ -53,6 +56,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @Autonomous(name="easy park", group="Robot")
+@Config
 public class AutobyTime extends LinearOpMode {
 
     // This opMode is for an Autonomous drive from the right submersible seam (48 inches from right side wall)
@@ -61,6 +65,8 @@ public class AutobyTime extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
     static final double     FORWARD_SPEED = 0.2;
     static final double     STRAFE_SPEED    = 0.5;
+    public static double    timeOne = 0.5;
+    public static double     timeTwo = 3.0;
 
     @Override
     public void runOpMode() {
@@ -95,8 +101,8 @@ public class AutobyTime extends LinearOpMode {
         frontRight.setPower(FORWARD_SPEED);
         backRight.setPower(FORWARD_SPEED);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 0.5)) {
-            telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
+        while (opModeIsActive() && (runtime.seconds() < timeOne)) {
+            telemetry.addData("Path", "Step 1", runtime.seconds());
             telemetry.update();
         }
 
@@ -106,30 +112,27 @@ public class AutobyTime extends LinearOpMode {
         frontRight.setPower(-STRAFE_SPEED);
         backRight.setPower(-STRAFE_SPEED);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 3.0)) {
-            telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
+        while (opModeIsActive() && (runtime.seconds() < timeTwo)) {
+            telemetry.addData("Path", "Step 2", runtime.seconds());
             telemetry.update();
         }
 
-       // Use the following operations if driving backwards is desired.
-      //  frontLeft.setPower(-FORWARD_SPEED);
-      //  backLeft.setPower(-FORWARD_SPEED);
-      //  frontRight.setPower(-FORWARD_SPEED);
-      //  backRight.setPower(-FORWARD_SPEED);
-      //  runtime.reset();
-      //  while (opModeIsActive() && (runtime.seconds() < 1.0)) {
-      //      telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
-     //       telemetry.update();
-      //  }
-
-        // Step 4:  Stop the robot.
+        // Done. Stop the robot.
         frontLeft.setPower(0);
         backLeft.setPower(0);
         frontRight.setPower(0);
         backRight.setPower(0);
-
         telemetry.addData("Path", "Complete");
         telemetry.update();
+
+        // Provide telemetry to FTC Dashboard that can be manipulated.
+        while (opModeIsActive()) {
+
+            TelemetryPacket values = new TelemetryPacket();
+            values.put("Forward Time", timeOne);
+            values.put("Strafe Time", timeTwo);
+            FtcDashboard.getInstance().sendTelemetryPacket(values);
+        }
 
         sleep(1000);
     }

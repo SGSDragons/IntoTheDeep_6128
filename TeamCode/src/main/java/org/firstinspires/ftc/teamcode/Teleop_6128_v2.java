@@ -53,7 +53,7 @@ public class Teleop_6128_v2 extends LinearOpMode {
             double max;
 
             double drive = -gamepad1.left_stick_y;
-            double lateral = gamepad1.left_stick_x;
+            double lateral = gamepad1.left_stick_x * 0.7;
             double turn  =  gamepad1.right_stick_x;
 
             double leftFrontPower = drive + lateral + turn;

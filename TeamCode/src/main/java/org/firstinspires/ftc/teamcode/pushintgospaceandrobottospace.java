@@ -53,9 +53,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="push sample", group="Robot")
-@Disabled
-public class autotime_highbasket extends LinearOpMode {
+@Autonomous(name="pushintgospaceandrobottospace", group="Robot")
+@Config
+public class pushintgospaceandrobottospace extends LinearOpMode {
 
     // This opMode is for an Autonomous drive from the right submersible seam (48 inches from right side wall)
     // and is intended for parking (only) in the observation zone for either red or blue alliance.
@@ -63,28 +63,32 @@ public class autotime_highbasket extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
     public static double     FORWARD_SPEED1 = 0.5;
 
-    public static double    STEP1_TIME = 0.5;
+    public static double    STEP1_TIME = 1;
 
-    public static double STEP2_TIME = 2;
+    public static double STEP2_TIME = 4.7;
 
     public static double STEP3_TIME = 1.4;
 
-    public static double     TURN_SPEED1 = 0.5;
+    public static double     TURN_SPEED1 = 0.2;
 
-    public static double STEP4_TIME= 0.4;
+    public static double STEP4_TIME= 0.2;
 
-    public static double FORWARD_SPEED2 = 0.5;
+    public static double FORWARD_SPEED2 = 0.2;
 
-  public static double  FORWARD_SPEED3;
+    public static double  FORWARD_SPEED3 = 0.2;
 
-  public static double STEP5_TIME;
+
+    public static double STEP5_TIME;
+
+    public static double TURN_SPEED2 = 0.3;
+
 
     @Override
     public void runOpMode() {
 
         // Initialize the hardware variables
-        final DcMotor frontRight  = hardwareMap.get(DcMotor.class, "motor1");
-        final DcMotor frontLeft  = hardwareMap.get(DcMotor.class, "motor2");
+        final DcMotor frontRight = hardwareMap.get(DcMotor.class, "motor1");
+        final DcMotor frontLeft = hardwareMap.get(DcMotor.class, "motor2");
         final DcMotor backRight = hardwareMap.get(DcMotor.class, "motor3");
         final DcMotor backLeft = hardwareMap.get(DcMotor.class, "motor4");
         final DcMotor arm = hardwareMap.get(DcMotor.class, "arm");
@@ -106,99 +110,35 @@ public class autotime_highbasket extends LinearOpMode {
         // Wait for the game to start (driver presses START)
         waitForStart();
 
-
-        // Step 1:  Drive forward for a half second to get off the starting side wall (prevent interference).
-        frontLeft.setPower(FORWARD_SPEED1);
-        backLeft.setPower(FORWARD_SPEED1);
-        frontRight.setPower(FORWARD_SPEED1);
-        backRight.setPower(FORWARD_SPEED1);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < STEP1_TIME)) {
-            telemetry.addData("Path", "step 1: moving forward", runtime.seconds());
-            telemetry.update();
-        }
-
-        frontLeft.setPower(-TURN_SPEED1);
-        backLeft.setPower(TURN_SPEED1);
+        frontLeft.setPower(FORWARD_SPEED3);
+        backLeft.setPower(-TURN_SPEED1);
         frontRight.setPower(-TURN_SPEED1);
-        backRight.setPower(-TURN_SPEED1);
+        backRight.setPower(TURN_SPEED1);
         runtime.reset();
-
-        while (opModeIsActive() && (runtime.seconds() < STEP2_TIME)) {
-            telemetry.addData("path", "step 2: turning left", runtime.seconds());
-            telemetry.update();
-
-        }
-
-
-        arm.setPower(0.5);
-        sleep(250);
-        arm.setPower(0.5);
-        sleep(250);
-        arm.setPower(0.5);
-        sleep(250);
-        arm.setPower(0);
-        sleep(250);
-        arm.setPower(0.5);
-        sleep(250);
-        arm.setPower(0);
-        sleep(250);
-        arm.setPower(0.5);
-        sleep(250);
-        arm.setPower(0);
-        arm.setPower(0.5);
-        sleep(250);
-        arm.setPower(0.5);
-        sleep(250);
-        arm.setPower(0.5);
-        sleep(250);
-        arm.setPower(0);
-        sleep(250);
-        arm.setPower(0.5);
-        sleep(250);
-        arm.setPower(0);
-        sleep(250);
-        arm.setPower(0.5);
-        sleep(250);
-        arm.setPower(0);
-
-        while (opModeIsActive() && (runtime.seconds() < STEP3_TIME)) {
-            telemetry.addData("Path", "step 3: extending arm", runtime.seconds());
-            telemetry.update();
-        }
-
-        frontLeft.setPower(FORWARD_SPEED2);
-        backLeft.setPower(FORWARD_SPEED2);
-        frontRight.setPower(FORWARD_SPEED2);
-        backRight.setPower(FORWARD_SPEED2);
-        runtime.reset();
-
         while (opModeIsActive() && (runtime.seconds() < STEP4_TIME)) {
-            telemetry.addData("Path", "step 4: moving forward", runtime.seconds());
+            telemetry.addData("Path", "step 1, moving forward", runtime.seconds());
             telemetry.update();
         }
 
         frontLeft.setPower(TURN_SPEED1);
         backLeft.setPower(TURN_SPEED1);
-        frontRight.setPower(-TURN_SPEED1);
-        backRight.setPower(-TURN_SPEED1);
+        frontRight.setPower(TURN_SPEED1);
+        backRight.setPower(TURN_SPEED1);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < STEP5_TIME)) {
-            telemetry.addData("Path", "step 5: strafing left", runtime.seconds());
+        while (opModeIsActive() && (runtime.seconds() < STEP1_TIME)) {
+            telemetry.addData("Path", "step 1, moving forward", runtime.seconds());
             telemetry.update();
         }
-//THIS IS THE DIRECTIONS FOR STRSFING RIGHT.
 
-        //frontLeft.setPower(STRAFE_SPEED);
-        //backLeft.setPower(STRAFE_SPEED);
-        //frontRight.setPower(-STRAFE_SPEED);
-        //ackRight.setPower(-STRAFE_SPEED);
-
-        frontLeft.setPower(FORWARD_SPEED3);
-        backLeft.setPower(FORWARD_SPEED3);
-        frontRight.setPower(FORWARD_SPEED3);
-        backRight.setPower(FORWARD_SPEED3);
+        frontLeft.setPower(-TURN_SPEED2);
+        backLeft.setPower(-TURN_SPEED2);
+        frontRight.setPower(-TURN_SPEED2);
+        backRight.setPower(-TURN_SPEED2);
         runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < STEP2_TIME)) {
+            telemetry.addData("Path", "step 2, moving backwards", runtime.seconds());
+            telemetry.update();
+        }
 
         // Use the following operations if driving backwards is desired.
         //  frontLeft.setPower(-FORWARD_SPEED);
@@ -226,8 +166,8 @@ public class autotime_highbasket extends LinearOpMode {
             TelemetryPacket values = new TelemetryPacket();
             values.put("First step time", STEP1_TIME);
             values.put("First step speed", FORWARD_SPEED1);
-                values.put("Second step time", STEP2_TIME);
-                values.put("Turn speed", TURN_SPEED1);
+            values.put("Second step time", STEP2_TIME);
+            values.put("Turn speed", TURN_SPEED1);
             values.put("Third step time",STEP3_TIME);
             values.put("Third step speed",FORWARD_SPEED2 );
             values.put("fourth step time",STEP4_TIME );

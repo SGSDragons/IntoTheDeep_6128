@@ -55,18 +55,18 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="easy park", group="Robot")
+@Autonomous(name="easy specimen", group="Robot")
 @Config
-public class AutobyTime extends LinearOpMode {
+public class easy_specimen extends LinearOpMode {
 
     // This opMode is for an Autonomous drive from the right submersible seam (48 inches from right side wall)
     // and is intended for parking (only) in the observation zone for either red or blue alliance.
     // Insure that no other robots will be in your way for this parking opMode to work as intended.
     private ElapsedTime     runtime = new ElapsedTime();
-    public static double     FORWARD_SPEED = 0.4;
-    public static double     STRAFE_SPEED    = 0.0;
-    public static double    timeOne = 3;
-    public static double     timeTwo = 0.0;
+    public static double     FORWARD_SPEED = -0.2;
+    public static double     STRAFE_SPEED    = -0.2;
+    public static double    timeOne = 1;
+    public static double     timeTwo = 1.2;
 
     @Override
     public void runOpMode() {
@@ -76,9 +76,9 @@ public class AutobyTime extends LinearOpMode {
         final DcMotor frontLeft  = hardwareMap.get(DcMotor.class, "motor2");
         final DcMotor backRight = hardwareMap.get(DcMotor.class, "motor3");
         final DcMotor backLeft = hardwareMap.get(DcMotor.class, "motor4");
-     //   final DcMotor arm = hardwareMap.get(DcMotor.class, "arm");
-     //   Servo claw = hardwareMap.get(Servo.class, "claw");
-     //   claw.setPosition(0);
+        //   final DcMotor arm = hardwareMap.get(DcMotor.class, "arm");
+        //   Servo claw = hardwareMap.get(Servo.class, "claw");
+        //   claw.setPosition(0);
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
@@ -106,6 +106,17 @@ public class AutobyTime extends LinearOpMode {
             telemetry.update();
         }
 
+        // Step 2:  Strafe right for 3 seconds to make it (approx. 46 inches) into the observation zone to park.
+        frontLeft.setPower(STRAFE_SPEED);
+        backLeft.setPower(STRAFE_SPEED);
+        frontRight.setPower(STRAFE_SPEED);
+        backRight.setPower(STRAFE_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < timeTwo)) {
+            telemetry.addData("Path", "Step 2", runtime.seconds());
+            telemetry.update();
+        }
+
         // Done. Stop the robot.
         frontLeft.setPower(0);
         backLeft.setPower(0);
@@ -121,6 +132,7 @@ public class AutobyTime extends LinearOpMode {
             values.put("Forward Time", timeOne);
             values.put("Strafe Time", timeTwo);
             values.put("Strafe speed",FORWARD_SPEED);
+            values.put("Strafe speed",STRAFE_SPEED);
             FtcDashboard.getInstance().sendTelemetryPacket(values);
         }
 

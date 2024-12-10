@@ -33,6 +33,7 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -68,6 +69,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name="Teleop_6128", group="Teleop")
 @Config
+@Disabled
 public class Teleop_6128 extends LinearOpMode {
 
     public static int ARM_LOW = 35;

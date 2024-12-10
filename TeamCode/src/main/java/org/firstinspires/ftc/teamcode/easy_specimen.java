@@ -40,6 +40,18 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+//direcory
+/*
+//this uses relatave positioning.
+step one:
+          <----------
+step two:
+          ----------------------->
+ */
+/*
+the purpous of this is to make it easy for the first move of the teleop is to pick up a sample, and be ready to laod. it will go forward
+and backwards to make it so that once the arm is extended, it will not have to move the robot to grab the specemen (or sample).
+ */
 
 /*
  * This OpMode illustrates the concept of driving a path based on time.
@@ -76,9 +88,9 @@ public class easy_specimen extends LinearOpMode {
         final DcMotor frontLeft  = hardwareMap.get(DcMotor.class, "motor2");
         final DcMotor backRight = hardwareMap.get(DcMotor.class, "motor3");
         final DcMotor backLeft = hardwareMap.get(DcMotor.class, "motor4");
-        //   final DcMotor arm = hardwareMap.get(DcMotor.class, "arm");
-        //   Servo claw = hardwareMap.get(Servo.class, "claw");
-        //   claw.setPosition(0);
+          final DcMotor arm = hardwareMap.get(DcMotor.class, "arm");
+           Servo claw = hardwareMap.get(Servo.class, "claw");
+           claw.setPosition(0);
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.

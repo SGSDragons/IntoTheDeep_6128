@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 @Autonomous(name="Auto Test", group="Robot")
-// @Disabled
+@Disabled
 public class AutoTest extends LinearOpMode{
 
     // Declare the motors

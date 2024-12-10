@@ -69,6 +69,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 
 @TeleOp(name="Motor Test", group="Tests")
 @Config
+@Disabled
 public class MotorTest extends LinearOpMode {
 
     public static int ARM_LOW = 35;

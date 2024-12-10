@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -9,8 +10,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name="Teleop_6128_v2", group="Linear OpMode")
-//@Disabled
-public class Teleop_6128_v2 extends LinearOpMode {
+@Disabled
+public class teleop_6128_v3_one_controller extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -56,7 +57,7 @@ public class Teleop_6128_v2 extends LinearOpMode {
             double max;
 
             double drive = -gamepad1.left_stick_y;
-            double lateral = gamepad1.left_stick_x * 0.7;
+            double lateral =  gamepad1.left_stick_x * 0.7;
             double turn  =  gamepad1.right_stick_x;
 
             double leftFrontPower = drive + lateral + turn;
@@ -81,11 +82,11 @@ public class Teleop_6128_v2 extends LinearOpMode {
             frontRight.setPower(rightFrontPower/1.5);
             backRight.setPower(rightBackPower/1.5);
 
-           //The following code controls the extendable lever arm for the claw.
+            //The following code controls the extendable lever arm for the claw.
 
             double armPower = 0.0;
 
-            claw.setPosition(gamepad2.right_trigger);
+            claw.setPosition(gamepad1.right_trigger);
 
             if (gamepad2.y) {
                 arm.setTargetPosition(ARM_HIGH);
@@ -106,13 +107,9 @@ public class Teleop_6128_v2 extends LinearOpMode {
                 armPower = ARM_POWER;
             }
             else {
-                armPower = gamepad2.left_stick_y*ARM_POWER;
+                armPower = gamepad1.right_stick_y;
                 arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
                 arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-                if (gamepad2.left_bumper) {
-                    armPower = armPower * 2;
-                }
             }
 
             TelemetryPacket packet = new TelemetryPacket();

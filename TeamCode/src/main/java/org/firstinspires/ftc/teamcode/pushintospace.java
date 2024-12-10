@@ -27,6 +27,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+//this is the directory:
+//step one:
+/*
+        <--------------
+ */
+/* the purpous of this is to push a sample into the space below the basket to get points.
+*/
+
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;

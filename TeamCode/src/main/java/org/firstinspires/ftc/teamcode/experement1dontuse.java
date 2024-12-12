@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 @Config
 @TeleOp(name="experement1dontuse", group="Linear OpMode")
-@Disabled
+
 public class experement1dontuse extends LinearOpMode {
 
     // Declare OpMode members.
@@ -23,7 +23,7 @@ public class experement1dontuse extends LinearOpMode {
     public static int a;
     public static int b;
 
-public static int CLAWPOSITION;
+    public static int CLAWPOSITION;
 
 
     @Override
@@ -40,14 +40,21 @@ public static int CLAWPOSITION;
         final DcMotor backLeft = hardwareMap.get(DcMotor.class, "motor4");
         final DcMotor arm = hardwareMap.get(DcMotor.class, "arm");
         Servo claw = hardwareMap.get(Servo.class, "claw");
-        claw.setPosition(0);
-        TelemetryPacket values = new TelemetryPacket();
-        values.put("Forward Time",x);
-        values.put("Strafe Time",y);
-        values.put("Strafe Time",z);
-while (true){
-    CLAWPOSITION = (int) claw.getPosition();
-}
 
+        waitForStart();
+
+        while(opModeIsActive()) {
+            TelemetryPacket values = new TelemetryPacket();
+            values.put("Forward Time", x);
+            values.put("Strafe Time", y);
+            values.put("Strafe Time", z);
+            values.put("claw", claw.getPosition());
+
+            TelemetryPacket packet = new TelemetryPacket();
+            packet.put("arm pos", arm.getCurrentPosition());
+            packet.put("arm power", arm.getPower());
+            packet.put("claw", claw.getPosition());
+            FtcDashboard.getInstance().sendTelemetryPacket(packet);
+        }
     }
 }

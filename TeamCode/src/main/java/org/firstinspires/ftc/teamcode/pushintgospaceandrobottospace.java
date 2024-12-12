@@ -30,11 +30,28 @@
 //this is the directory:
 //step one:
 /*
-        <--------------
+
+         / \
+          |
+          |
+          |
+          |
  */
 //step two:
 /*
+        <--------------
+ */
+//step three:
+/*
      --------------------------------------------------------------------------------->
+ */
+//step four
+/*
+         |
+         |
+         |
+         |
+        \ /
  */
 /* the purpous if this is to push a sample into the space below the basket, and back up into the human player zone, geting points.
 */
@@ -77,7 +94,7 @@ public class pushintgospaceandrobottospace extends LinearOpMode {
 
     public static double    STEP1_TIME = 1;
 
-    public static double STEP2_TIME = 4.7;
+    public static double STEP2_TIME = 6;
 
     public static double STEP3_TIME = 1.4;
 
@@ -93,6 +110,10 @@ public class pushintgospaceandrobottospace extends LinearOpMode {
     public static double STEP5_TIME;
 
     public static double TURN_SPEED2 = 0.3;
+
+    public static double STRAFE_SPEED = 0.4;
+
+    public static double STRAFE_TIME = 0.6;
 
 
     @Override
@@ -122,15 +143,9 @@ public class pushintgospaceandrobottospace extends LinearOpMode {
         // Wait for the game to start (driver presses START)
         waitForStart();
 
-        frontLeft.setPower(FORWARD_SPEED3);
-        backLeft.setPower(-TURN_SPEED1);
-        frontRight.setPower(-TURN_SPEED1);
-        backRight.setPower(TURN_SPEED1);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < STEP4_TIME)) {
-            telemetry.addData("Path", "step 1, moving forward", runtime.seconds());
-            telemetry.update();
-        }
+
+
+
 
         frontLeft.setPower(TURN_SPEED1);
         backLeft.setPower(TURN_SPEED1);
@@ -142,6 +157,30 @@ public class pushintgospaceandrobottospace extends LinearOpMode {
             telemetry.update();
         }
 
+        frontLeft.setPower(STRAFE_SPEED);
+        backLeft.setPower(STRAFE_SPEED);
+        frontRight.setPower(-STRAFE_SPEED);
+        backRight.setPower(-STRAFE_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < STRAFE_TIME)) {
+            telemetry.addData("Path", "step 1, moving forward", runtime.seconds());
+            telemetry.update();
+        }
+
+        claw.setPosition(1);
+
+        frontLeft.setPower(TURN_SPEED1);
+        backLeft.setPower(TURN_SPEED1);
+        frontRight.setPower(TURN_SPEED1);
+        backRight.setPower(TURN_SPEED1);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < 5)) {
+            telemetry.addData("Path", "step 1, moving forward", runtime.seconds());
+            telemetry.update();
+        }
+
+        claw.setPosition(0);
+
         frontLeft.setPower(-TURN_SPEED2);
         backLeft.setPower(-TURN_SPEED2);
         frontRight.setPower(-TURN_SPEED2);
@@ -149,6 +188,16 @@ public class pushintgospaceandrobottospace extends LinearOpMode {
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < STEP2_TIME)) {
             telemetry.addData("Path", "step 2, moving backwards", runtime.seconds());
+            telemetry.update();
+        }
+
+        frontLeft.setPower(-STRAFE_SPEED);
+        backLeft.setPower(-STRAFE_SPEED);
+        frontRight.setPower(STRAFE_SPEED);
+        backRight.setPower(STRAFE_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < 5)) {
+            telemetry.addData("Path", "step 1, moving forward", runtime.seconds());
             telemetry.update();
         }
 

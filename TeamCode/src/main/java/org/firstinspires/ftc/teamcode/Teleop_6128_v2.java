@@ -119,6 +119,7 @@ public class Teleop_6128_v2 extends LinearOpMode {
             packet.put("arm pos", arm.getCurrentPosition());
             packet.put("arm power", arm.getPower());
             packet.put("arm mode", arm.getMode().toString());
+            packet.put("claw", claw.getPosition());
             FtcDashboard.getInstance().sendTelemetryPacket(packet);
             if (Math.abs(armPower) > 0.1) {
                 armPower += 0.5*Math.cos(arm.getCurrentPosition()/300.0 * Math.PI/2);

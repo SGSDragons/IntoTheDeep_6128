@@ -44,7 +44,7 @@ public class Teleop_6128_v2 extends LinearOpMode {
         backRight.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.FORWARD);
 
-        int mode;
+       // int mode;
 
 
         // Wait for the game to start (driver presses PLAY)
@@ -55,8 +55,18 @@ public class Teleop_6128_v2 extends LinearOpMode {
 
             double max;
 
+            int speed = 0;
+
+            if (gamepad1.left_stick_button = false){
+                speed = (int) 0.5;
+            }
+            else if (gamepad1.left_stick_button == true){
+
+                speed = (int) 0.2;
+            }
+
             double drive = -gamepad1.left_stick_y;
-            double lateral = gamepad1.left_stick_x * 0.7;
+            double lateral = gamepad1.left_stick_x * speed;
             double turn  =  gamepad1.right_stick_x;
 
             double leftFrontPower = drive + lateral + turn;

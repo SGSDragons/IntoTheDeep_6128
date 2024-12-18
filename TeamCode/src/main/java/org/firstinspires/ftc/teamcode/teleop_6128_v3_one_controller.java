@@ -21,6 +21,7 @@ public class teleop_6128_v3_one_controller extends LinearOpMode {
     public static double ARM_POWER = 0.5;
 
 
+
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -35,7 +36,7 @@ public class teleop_6128_v3_one_controller extends LinearOpMode {
         final DcMotor backLeft = hardwareMap.get(DcMotor.class, "motor4");
         final DcMotor arm = hardwareMap.get(DcMotor.class, "arm");
         Servo claw = hardwareMap.get(Servo.class, "claw");
-        claw.setPosition(0);
+
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
@@ -56,8 +57,18 @@ public class teleop_6128_v3_one_controller extends LinearOpMode {
 
             double max;
 
+            int speed = 0;
+
+            if (gamepad1.left_stick_button = false){
+                speed = (int) 0.5;
+            }
+            else if (gamepad1.left_stick_button == true){
+
+                speed = (int) 0.2;
+            }
+
             double drive = -gamepad1.left_stick_y;
-            double lateral =  gamepad1.left_stick_x * 0.7;
+            double lateral = gamepad1.left_stick_x * speed;
             double turn  =  gamepad1.right_stick_x;
 
             double leftFrontPower = drive + lateral + turn;

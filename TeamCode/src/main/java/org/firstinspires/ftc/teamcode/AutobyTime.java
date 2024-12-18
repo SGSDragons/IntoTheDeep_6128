@@ -89,7 +89,7 @@ public class AutobyTime extends LinearOpMode {
         final DcMotor backLeft = hardwareMap.get(DcMotor.class, "motor4");
        final DcMotor arm = hardwareMap.get(DcMotor.class, "arm");
         Servo claw = hardwareMap.get(Servo.class, "claw");
-        claw.setPosition(0);
+
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.

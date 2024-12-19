@@ -58,7 +58,7 @@ public class Teleop_6128_v2 extends LinearOpMode {
             int speed = 0;
 
             if (gamepad1.right_stick_button = false){
-                speed = (int) 0.7
+                speed = (int) 0.7;
             }
             else if (gamepad1.right_stick_button == true){
 

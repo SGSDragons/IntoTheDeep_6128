@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -10,6 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name="Teleop_6128_v2", group="Linear OpMode")
 //@Disabled
+@Config
 public class Teleop_6128_v2 extends LinearOpMode {
 
     // Declare OpMode members.
@@ -17,7 +19,11 @@ public class Teleop_6128_v2 extends LinearOpMode {
     public static int ARM_LOW = 35;
     public static int ARM_MEDIUM = 200;
     public static int ARM_HIGH = 350;
-    public static double ARM_POWER = 0.5;
+    public static double ARM_POWER = 0.8;
+
+    public static double NEW_ARM_POWER;
+            ;
+            ;
 
 
     @Override
@@ -64,6 +70,8 @@ public class Teleop_6128_v2 extends LinearOpMode {
             if(gamepad1.right_trigger > 0){
                 speed = 1.5;
             }
+
+            NEW_ARM_POWER = ARM_POWER - (arm.getCurrentPosition ());
 
 
 
@@ -117,6 +125,8 @@ public class Teleop_6128_v2 extends LinearOpMode {
                 arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
                 armPower = ARM_POWER;
             }
+
+
             else {
                 armPower = gamepad2.left_stick_y*ARM_POWER;
                 arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

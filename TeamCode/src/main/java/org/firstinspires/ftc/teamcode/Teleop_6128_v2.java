@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Util;
 
 @TeleOp(name="Teleop_6128_v2", group="Linear OpMode")
 //@Disabled
@@ -19,12 +20,32 @@ public class Teleop_6128_v2 extends LinearOpMode {
     public static int ARM_LOW = 35;
     public static int ARM_MEDIUM = 200;
     public static int ARM_HIGH = 350;
-    public static double ARM_POWER = 0.8;
+    public static double ARM_POWER = 0.58;
 
     public static double NEW_ARM_POWER;
             ;
             ;
+    public static double VERTICAL_ARM_OFFSET = 650.0;
+    public static double FEED_FORWARD_GAIN = 0.2;
 
+
+    class ArmDriver {
+
+        // The angle of the arm when resting on the ground
+        public static final double GROUND_ANGLE = -30.0;
+
+        // How many ticks to go from resting on the ground to being vertical
+
+        private int groundPos = 0;
+        public void resetGround(int pos) {
+            groundPos = pos;
+        }
+
+        public double getArmAngle(int armPosition) {
+            return ((armPosition-groundPos) / VERTICAL_ARM_OFFSET) * (90.0 - GROUND_ANGLE) + GROUND_ANGLE;
+        }
+
+    }
 
     @Override
     public void runOpMode() {
@@ -52,6 +73,10 @@ public class Teleop_6128_v2 extends LinearOpMode {
 
         int mode;
 
+        arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        ArmDriver armDriver = new ArmDriver();
+
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -61,9 +86,9 @@ public class Teleop_6128_v2 extends LinearOpMode {
 
             double max;
 
-             double speed = 0;
+             double speed = 1.0;
 
-             if(gamepad1.right_trigger > 0){
+             if(gamepad1.left_trigger > 0){
                  speed = 0.5;
              }
 
@@ -75,7 +100,7 @@ public class Teleop_6128_v2 extends LinearOpMode {
 
 
 
-                double drive = -gamepad1.left_stick_y * speed;//drive
+            double drive = -gamepad1.left_stick_y * speed;//drive
             double lateral = gamepad1.left_stick_x * speed;//turn
             double turn  =  gamepad1.right_stick_x;//strafe
 
@@ -107,44 +132,31 @@ public class Teleop_6128_v2 extends LinearOpMode {
 
             claw.setPosition(gamepad2.right_trigger);
 
-            if (gamepad2.y) {
-                arm.setTargetPosition(ARM_HIGH);
-                arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                armPower = ARM_POWER;
-            }
-            else if (gamepad2.b) {
-                arm.setTargetPosition(ARM_MEDIUM);
-                arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-                armPower = ARM_POWER;
-            }
-            else if (gamepad2.a) {
-                arm.setTargetPosition(ARM_LOW);
-                arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-                armPower = ARM_POWER;
+            armPower = gamepad2.left_stick_y*ARM_POWER;
+            arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+            if (gamepad2.left_bumper) {
+                armPower = armPower * 2;
             }
 
-
-            else {
-                armPower = gamepad2.left_stick_y*ARM_POWER;
-                arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-                if (gamepad2.left_bumper) {
-                    armPower = armPower * 2;
-                }
+            if (gamepad2.x) {
+                armDriver.resetGround(arm.getCurrentPosition());
             }
 
             TelemetryPacket packet = new TelemetryPacket();
             packet.put("arm pos", arm.getCurrentPosition());
+            packet.put("arm angle", armDriver.getArmAngle(arm.getCurrentPosition()));
             packet.put("arm power", arm.getPower());
             packet.put("arm mode", arm.getMode().toString());
             packet.put("claw", claw.getPosition());
             FtcDashboard.getInstance().sendTelemetryPacket(packet);
+
             if (Math.abs(armPower) > 0.1) {
-                armPower += 0.5*Math.cos(arm.getCurrentPosition()/300.0 * Math.PI/2);
+                double armAngle = armDriver.getArmAngle(arm.getCurrentPosition());
+                double gravityTorque = Math.cos(armAngle / 360.0 * (2*Math.PI));
+
+                armPower += FEED_FORWARD_GAIN * gravityTorque;
                 arm.setPower(armPower);
             } else {
                 arm.setPower(0.0);
